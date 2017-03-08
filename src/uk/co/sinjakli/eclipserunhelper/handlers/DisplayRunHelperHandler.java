@@ -43,7 +43,7 @@ import uk.co.sinjakli.eclipserunhelper.ui.RunHelperDialog;
 @SuppressWarnings("restriction")
 public class DisplayRunHelperHandler extends AbstractHandler {
 
-	private static final int MAX_RECENT_LAUNCHES = 5;
+	private static final int MAX_RECENT_LAUNCHES = 9;
 	private ILog logger;
 
 	@Override
@@ -52,22 +52,30 @@ public class DisplayRunHelperHandler extends AbstractHandler {
 
 		final String launchTypeParemeter = event.getParameter("uk.co.sinjakli.eclipserunhelper.launchType");
 		final String launchType;
-		if (launchTypeParemeter.equals("RUN")) {
+		if (launchTypeParemeter.startsWith("RUN")) {
 			launchType = ILaunchManager.RUN_MODE;
-		} else {
+		} else { // startsWith "DEBUG"
 			launchType = ILaunchManager.DEBUG_MODE;
 		}
 
 		final ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 		final LaunchConfigurationManager launchConfigurationManager = DebugUIPlugin.getDefault().getLaunchConfigurationManager();
 
-		final ILaunchConfiguration[] launchHistory = launchConfigurationManager
-				.getLaunchHistory(IDebugUIConstants.ID_RUN_LAUNCH_GROUP)
-				.getHistory();
+		ILaunchConfiguration[] launchConfigs = null;
+		if (launchTypeParemeter.endsWith("HISTORY")) {
+			launchConfigs = launchConfigurationManager
+					.getLaunchHistory(IDebugUIConstants.ID_RUN_LAUNCH_GROUP)
+					.getHistory();
+		} else { // endsWith "FAVORITES"
+			launchConfigs = launchConfigurationManager
+					.getLaunchHistory(IDebugUIConstants.ID_RUN_LAUNCH_GROUP)
+					.getFavorites();
+		}
 
+		
 		final Map<String, ILaunchConfiguration> availableLaunches = new LinkedHashMap<String, ILaunchConfiguration>();
 		int launchIndex = 1;
-		for (final ILaunchConfiguration launchConfiguration : launchHistory) {
+		for (final ILaunchConfiguration launchConfiguration : launchConfigs) {
 			availableLaunches.put(String.valueOf(launchIndex), launchConfiguration);
 			launchIndex++;
 
@@ -76,13 +84,12 @@ public class DisplayRunHelperHandler extends AbstractHandler {
 			}
 		}
 
-		final ILaunchConfiguration lastJUnitLaunch = getLastJunitLaunch(launchManager, launchHistory);
+		final ILaunchConfiguration lastJUnitLaunch = getLastJunitLaunch(launchManager, launchConfigs);
 		if (lastJUnitLaunch != null) {
 			availableLaunches.put("t", lastJUnitLaunch);
 		}
-
+		
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-
 			@Override
 			public void run() {
 				final Shell activeShell = PlatformUI.getWorkbench()
@@ -97,6 +104,7 @@ public class DisplayRunHelperHandler extends AbstractHandler {
 
 		return null;
 	}
+	
 
 	private ILaunchConfiguration getLastJunitLaunch(final ILaunchManager launchManager, final ILaunchConfiguration[] launchHistory) {
 		final ILaunchConfigurationType jUnitLaunchType = launchManager.getLaunchConfigurationType(JUnitLaunchConfigurationConstants.ID_JUNIT_APPLICATION);

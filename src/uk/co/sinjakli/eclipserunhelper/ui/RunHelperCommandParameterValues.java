@@ -27,8 +27,10 @@ public class RunHelperCommandParameterValues implements IParameterValues {
 	@Override
 	public Map<String, String> getParameterValues() {
 		final HashMap<String, String> paramaterMap = new HashMap<String, String>();
-		paramaterMap.put("Run", "RUN");
-		paramaterMap.put("Debug", "DEBUG");
+		paramaterMap.put("Run History", "RUN_HISTORY");
+		paramaterMap.put("Debug History", "DEBUG_HISTORY");
+		paramaterMap.put("Run Favorites", "RUN_FAVORITES");
+		paramaterMap.put("Debug Favorites", "DEBUG_FAVORITES");
 		return paramaterMap;
 	}
 

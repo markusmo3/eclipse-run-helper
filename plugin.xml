@@ -31,7 +31,7 @@
             sequence="M1+M2+F11">
          <parameter
                id="uk.co.sinjakli.eclipserunhelper.launchType"
-               value="RUN">
+               value="RUN_FAVORITES">
          </parameter>
       </key>
       <key
@@ -41,7 +41,27 @@
             sequence="M2+F11">
          <parameter
                id="uk.co.sinjakli.eclipserunhelper.launchType"
-               value="DEBUG">
+               value="DEBUG_FAVORITES">
+         </parameter>
+      </key>
+      <key
+            commandId="uk.co.sinjakli.eclipserunhelper.displayRunHelper"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+M2+M3+F11">
+         <parameter
+               id="uk.co.sinjakli.eclipserunhelper.launchType"
+               value="RUN_HISTORY">
+         </parameter>
+      </key>
+      <key
+            commandId="uk.co.sinjakli.eclipserunhelper.displayRunHelper"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M2+M3+F11">
+         <parameter
+               id="uk.co.sinjakli.eclipserunhelper.launchType"
+               value="DEBUG_HISTORY">
          </parameter>
       </key>
    </extension>
