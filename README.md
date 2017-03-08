@@ -1,6 +1,6 @@
 # Eclipse Run Helper
 
-Your Eclipse run history, from the keyboard
+Your Eclipse run history or favorites, from the keyboard
 
 ## What does it do?
 
@@ -8,13 +8,16 @@ It gives you easy keyboard-driven access to the last few things you ran.
 
 ## Great. How do I install it?
 
-Just grab the plug-in [here](https://github.com/downloads/Sinjo/eclipse-run-helper/uk.co.sinjakli.eclipserunhelper-1.0.1.jar) and put it in the dropins folder of your Eclipse installation.
+Just grab the plug-in [here](https://github.com/downloads/markusmo3/eclipse-run-helper/uk.co.sinjakli.eclipserunhelper-1.1.0.jar) and put it in the dropins folder of your Eclipse installation.
 
 ## How do I use it?
 
-Press Ctrl+Shift+F11 for Run, or Shift+F11 for Debug. Then:
+* Ctrl + Shift + F11 -> Run Favorites
+* Shift + F11 -> Debug Favorites
+* Ctrl + Shift + Alt + F11 -> Run History
+* Shift + Alt + F11 -> Debug History
 
-* A number from 1 to 5 to select an item from your history
+* A number from 1 to 9 to select an item from your history
 * The letter "t" to re-run your last (JUnit) test run
 
 ## I've got a problem. Help!
