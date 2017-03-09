@@ -8,7 +8,7 @@ It gives you easy keyboard-driven access to the last few things you ran.
 
 ## Great. How do I install it?
 
-Just grab the plug-in [here](https://github.com/markusmo3/eclipse-run-helper/releases/download/1.1.0/uk.co.sinjakli.eclipserunhelper_1.1.1.jar) and put it in the dropins folder of your Eclipse installation.
+Just grab the plug-in [here](https://github.com/markusmo3/eclipse-run-helper/releases/download/1.1.1/uk.co.sinjakli.eclipserunhelper_1.1.1.jar) and put it in the dropins folder of your Eclipse installation.
 
 ## How do I use it?
 
