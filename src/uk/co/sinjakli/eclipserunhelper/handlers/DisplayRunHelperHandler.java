@@ -43,7 +43,10 @@ import uk.co.sinjakli.eclipserunhelper.ui.RunHelperDialog;
 @SuppressWarnings("restriction")
 public class DisplayRunHelperHandler extends AbstractHandler {
 
-	private static final int MAX_RECENT_LAUNCHES = 9;
+	private static final String[] KEY_CODES = new String[] {
+			"1", "2", "3", "4", "5", "6", "7", "8", "9",
+			"a", "s", "d", "f", "g", "h", "j", "k", "l",
+	};
 	private ILog logger;
 
 	@Override
@@ -52,10 +55,13 @@ public class DisplayRunHelperHandler extends AbstractHandler {
 
 		final String launchTypeParemeter = event.getParameter("uk.co.sinjakli.eclipserunhelper.launchType");
 		final String launchType;
+		final String launchGroupId;
 		if (launchTypeParemeter.startsWith("RUN")) {
 			launchType = ILaunchManager.RUN_MODE;
+			launchGroupId = IDebugUIConstants.ID_RUN_LAUNCH_GROUP;
 		} else { // startsWith "DEBUG"
 			launchType = ILaunchManager.DEBUG_MODE;
+			launchGroupId = IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP;
 		}
 
 		final ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
@@ -64,24 +70,19 @@ public class DisplayRunHelperHandler extends AbstractHandler {
 		ILaunchConfiguration[] launchConfigs = null;
 		if (launchTypeParemeter.endsWith("HISTORY")) {
 			launchConfigs = launchConfigurationManager
-					.getLaunchHistory(IDebugUIConstants.ID_RUN_LAUNCH_GROUP)
+					.getLaunchHistory(launchGroupId)
 					.getHistory();
 		} else { // endsWith "FAVORITES"
 			launchConfigs = launchConfigurationManager
-					.getLaunchHistory(IDebugUIConstants.ID_RUN_LAUNCH_GROUP)
+					.getLaunchHistory(launchGroupId)
 					.getFavorites();
 		}
+		launchConfigs = LaunchConfigurationManager.filterConfigs(launchConfigs);
 
 		
 		final Map<String, ILaunchConfiguration> availableLaunches = new LinkedHashMap<String, ILaunchConfiguration>();
-		int launchIndex = 1;
-		for (final ILaunchConfiguration launchConfiguration : launchConfigs) {
-			availableLaunches.put(String.valueOf(launchIndex), launchConfiguration);
-			launchIndex++;
-
-			if (launchIndex > MAX_RECENT_LAUNCHES) {
-				break;
-			}
+		for (int i = 0; i < KEY_CODES.length && i < launchConfigs.length; i++) {
+			availableLaunches.put(KEY_CODES[i], launchConfigs[i]);
 		}
 
 		final ILaunchConfiguration lastJUnitLaunch = getLastJunitLaunch(launchManager, launchConfigs);

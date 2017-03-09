@@ -66,15 +66,15 @@ public class RunHelperDialog extends PopupDialog {
 
 		this.availableLaunches = availableLaunches;
 		this.launchType = launchType;
-		logger = RunHelperPlugin.getDefault().getLog();
-		disposableImages = new HashSet<Image>();
+		this.logger = RunHelperPlugin.getDefault().getLog();
+		this.disposableImages = new HashSet<Image>();
 	}
 
 	@Override
 	protected Control createDialogArea(final Composite parent) {
 		final Composite composite = (Composite) super.createDialogArea(parent);
 
-		final Table table = new Table(composite, SWT.SINGLE | SWT.FULL_SELECTION | SWT.BORDER);
+		final Table table = new Table(composite, SWT.SINGLE | SWT.FULL_SELECTION);
 		table.setLinesVisible(true);
 		table.setHeaderVisible(false);
 
@@ -83,6 +83,7 @@ public class RunHelperDialog extends PopupDialog {
 
 		final TableColumn launchNameColumn = new TableColumn(table, SWT.NONE);
 		final TableColumn keyBindingColumn = new TableColumn(table, SWT.NONE);
+		final TableColumn projectColumn = new TableColumn(table, SWT.NONE);
 
 		final TableViewer tableViewer = new TableViewer(table);
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
@@ -129,6 +130,22 @@ public class RunHelperDialog extends PopupDialog {
 				return keyString;
 			}
 		});
+		final TableViewerColumn projectColumnViewer = new TableViewerColumn(tableViewer, projectColumn);
+		projectColumnViewer.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(final Object element) {
+				final String keyString = (String) element;
+				final ILaunchConfiguration launchConfiguration = availableLaunches.get(keyString);
+				String projectName = "";
+				try {
+					projectName = launchConfiguration.getAttribute(
+							"org.eclipse.jdt.launching.PROJECT_ATTR", "");
+				} catch (CoreException e) {
+					// ignore...
+				}
+				return projectName;
+			}
+		});
 
 		tableViewer.addDoubleClickListener(new IDoubleClickListener() {
 
@@ -167,6 +184,7 @@ public class RunHelperDialog extends PopupDialog {
 
 		table.getColumn(0).pack();
 		table.getColumn(1).pack();
+		table.getColumn(2).pack();
 
 		composite.pack();
 
