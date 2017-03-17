@@ -8,7 +8,7 @@ It gives you easy keyboard-driven access to the last few things you ran.
 
 ## Great. How do I install it?
 
-Just grab the plug-in [here](https://github.com/markusmo3/eclipse-run-helper/releases/download/1.1.1/uk.co.sinjakli.eclipserunhelper_1.1.1.jar) and put it in the dropins folder of your Eclipse installation.
+Just grab the plug-in [here](https://github.com/markusmo3/eclipse-run-helper/releases/download/1.1.2/uk.co.sinjakli.eclipserunhelper_1.1.2.jar) and put it in the dropins folder of your Eclipse installation.
 
 ## How do I use it?
 
@@ -17,8 +17,12 @@ Just grab the plug-in [here](https://github.com/markusmo3/eclipse-run-helper/rel
 * Ctrl + Shift + Alt + F11 -> Run History
 * Shift + Alt + F11 -> Debug History
 
-* A number from 1 to 9 to select an item from your history
-* The letter "t" to re-run your last (JUnit) test run
+* Press a key from 0 to 9 or [a, s, d, f, g, h, j, k, l] to select an item from your history
+* Press "t" to re-run your last (JUnit) test run
+
+## Showcases
+![Debug Favorites Showcase](showcase_debug_favorites.png)
+![Run History Showcase](showcase_run_history.png)
 
 ## I've got a problem. Help!
 

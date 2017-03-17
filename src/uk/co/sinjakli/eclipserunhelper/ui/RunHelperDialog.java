@@ -29,6 +29,7 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.jface.dialogs.PopupDialog;
+import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -39,12 +40,14 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -56,16 +59,18 @@ public class RunHelperDialog extends PopupDialog {
 
 	private final Map<String, ILaunchConfiguration> availableLaunches;
 	private final String launchType;
+	private final String launchCategory;
 	private final ILog logger;
 	private final Set<Image> disposableImages;
 
-	public RunHelperDialog(final Shell parent, final Map<String, ILaunchConfiguration> availableLaunches, final String launchType) {
-
+	public RunHelperDialog(Shell parent, Map<String, ILaunchConfiguration> availableLaunches,
+			String launchType, String launchCategory) {
 		super(parent, PopupDialog.INFOPOPUP_SHELLSTYLE, true, false,
 				false, false, false, null, null);
 
 		this.availableLaunches = availableLaunches;
 		this.launchType = launchType;
+		this.launchCategory = launchCategory;
 		this.logger = RunHelperPlugin.getDefault().getLog();
 		this.disposableImages = new HashSet<Image>();
 	}
@@ -74,12 +79,26 @@ public class RunHelperDialog extends PopupDialog {
 	protected Control createDialogArea(final Composite parent) {
 		final Composite composite = (Composite) super.createDialogArea(parent);
 
+		final String launchPrefix;
+		if (launchType.equals(ILaunchManager.RUN_MODE)){
+			launchPrefix = "Run ";
+		} else {
+			launchPrefix = "Debug ";
+		}
+		
+		final Label label = new Label(composite, SWT.CENTER);
+		label.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true));
+		label.setText(launchPrefix + launchCategory);
+
+		FontDescriptor boldDescriptor = FontDescriptor.createFrom(label.getFont()).setStyle(SWT.BOLD);
+		Font boldFont = boldDescriptor.createFont(label.getDisplay());
+		label.setFont(boldFont);
+		
 		final Table table = new Table(composite, SWT.SINGLE | SWT.FULL_SELECTION);
 		table.setLinesVisible(true);
 		table.setHeaderVisible(false);
 
-		final GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		table.setLayoutData(data);
+		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		final TableColumn launchNameColumn = new TableColumn(table, SWT.NONE);
 		final TableColumn keyBindingColumn = new TableColumn(table, SWT.NONE);
@@ -95,13 +114,6 @@ public class RunHelperDialog extends PopupDialog {
 			public String getText(final Object element) {
 				final String keyString = (String) element;
 				final ILaunchConfiguration launchConfiguration = availableLaunches.get(keyString);
-				final String launchPrefix;
-				if (launchType.equals(ILaunchManager.RUN_MODE)){
-					launchPrefix = "Run ";
-				} else {
-					launchPrefix = "Debug ";
-				}
-
 				return launchPrefix + launchConfiguration.getName();
 			}
 

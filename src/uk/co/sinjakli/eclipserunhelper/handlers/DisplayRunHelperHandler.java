@@ -65,17 +65,21 @@ public class DisplayRunHelperHandler extends AbstractHandler {
 		}
 
 		final ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
-		final LaunchConfigurationManager launchConfigurationManager = DebugUIPlugin.getDefault().getLaunchConfigurationManager();
+		final LaunchConfigurationManager launchConfigurationManager = DebugUIPlugin.getDefault()
+				.getLaunchConfigurationManager();
 
+		final String launchCategory;
 		ILaunchConfiguration[] launchConfigs = null;
 		if (launchTypeParemeter.endsWith("HISTORY")) {
 			launchConfigs = launchConfigurationManager
 					.getLaunchHistory(launchGroupId)
 					.getHistory();
+			launchCategory = "History";
 		} else { // endsWith "FAVORITES"
 			launchConfigs = launchConfigurationManager
 					.getLaunchHistory(launchGroupId)
 					.getFavorites();
+			launchCategory = "Favorites";
 		}
 		launchConfigs = LaunchConfigurationManager.filterConfigs(launchConfigs);
 
@@ -97,7 +101,7 @@ public class DisplayRunHelperHandler extends AbstractHandler {
 						.getActiveWorkbenchWindow().getShell();
 
 				final RunHelperDialog dialog = new RunHelperDialog(activeShell,
-						availableLaunches, launchType);
+						availableLaunches, launchType, launchCategory);
 
 				dialog.open();
 			}
@@ -107,8 +111,10 @@ public class DisplayRunHelperHandler extends AbstractHandler {
 	}
 	
 
-	private ILaunchConfiguration getLastJunitLaunch(final ILaunchManager launchManager, final ILaunchConfiguration[] launchHistory) {
-		final ILaunchConfigurationType jUnitLaunchType = launchManager.getLaunchConfigurationType(JUnitLaunchConfigurationConstants.ID_JUNIT_APPLICATION);
+	private ILaunchConfiguration getLastJunitLaunch(final ILaunchManager launchManager,
+			final ILaunchConfiguration[] launchHistory) {
+		final ILaunchConfigurationType jUnitLaunchType = launchManager
+				.getLaunchConfigurationType(JUnitLaunchConfigurationConstants.ID_JUNIT_APPLICATION);
 
 		for (final ILaunchConfiguration launchConfiguration : launchHistory) {
 			try {
